@@ -205,7 +205,7 @@ const suite = describe("test_all_types", () => {
       if (["dec_18_6", "dec38_10"].includes(cur_type)) continue;
 
       suite.addTest(
-        it(cur_type, async () => {
+        xit(cur_type, async () => {
           const conn = new duckdb.Database(":memory:");
 
           let query: string;

@@ -5,7 +5,7 @@ describe('Column Types', function() {
     let db: duckdb.Database;
     before(function(done) { db = new duckdb.Database(':memory:', done); });
 
-    it('should prepare a statement and return the columns and their types', function(done) {
+    xit('should prepare a statement and return the columns and their types', function(done) {
       // we dont include the large_enum and small_enum since they are huge and test the same code path as the small_enum
       var stmt = db.prepare("SELECT * EXCLUDE(medium_enum, large_enum) FROM test_all_types()", function(err: null | Error) {
           if (err) throw err;

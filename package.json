@@ -1,5 +1,5 @@
 {
-  "name": "duckdb",
+  "name": "duckdb-bobsled-dev",
   "main": "./lib/duckdb.js",
   "types": "./lib/duckdb.d.ts",
   "version": "0.0.2-dev5.0",
@@ -11,9 +11,9 @@
     "node-gyp": "^9.3.0"
   },
   "binary": {
-    "module_name": "duckdb",
+    "module_name": "duckdb-bobsled-dev",
     "module_path": "./lib/binding/",
-    "host": "https://duckdb-node.s3.amazonaws.com"
+    "host": "https://npm-gyp-store.s3.eu-central-1.amazonaws.com"
   },
   "scripts": {
     "install": "node-pre-gyp install --fallback-to-build",

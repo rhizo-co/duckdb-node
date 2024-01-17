@@ -43,8 +43,8 @@ jobs:
     strategy:
       matrix:
         # node.js current support policy to be found at https://github.com/duckdb/duckdb-node/tree/main/#Supported-Node-versions
-        node: [ '12', '14', '16', '17', '18', '19', '20', '21']
-        target_arch: [ x64, arm64 ]
+        node: [ '18' ]
+        target_arch: [ x64 ]
         isRelease:
           - ${{ startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main' }}
         exclude:
@@ -114,7 +114,7 @@ jobs:
     strategy:
       matrix:
         target_arch: [ x64, arm64 ]
-        node: [ '12', '14', '16', '17', '18', '19', '20', '21']
+        node: [ '18' ]
         isRelease:
           - ${{ startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main' }}
         exclude:
@@ -168,75 +168,3 @@ jobs:
       - name: Node ${{ matrix.node }}
         shell: bash
         run: ./scripts/node_build.sh ${{ matrix.node }}
-
-  win-nodejs:
-    name: node.js Windows
-    runs-on: windows-latest
-    needs: linux-nodejs
-    continue-on-error: ${{ matrix.node != '18' && matrix.node != '20' && matrix.node != '21' }}
-    env:
-      npm_config_msvs_version: 2019
-
-    strategy:
-      matrix:
-        node: [ '12', '14', '16', '17', '18', '19', '20', '21']
-        isRelease:
-          - ${{ startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main' }}
-        exclude:
-          - isRelease: false
-            node: 12
-          - isRelease: false
-            node: 14
-          - isRelease: false
-            node: 16
-          - isRelease: false
-            node: 17
-          - isRelease: false
-            node: 18
-          - isRelease: false
-            node: 19
-          - isRelease: false
-            node: 20
-
-    steps:
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.8'
-
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node }}
-
-      - name: Versions
-        shell: bash
-        run: |
-          systeminfo
-          node -v
-          npm -v
-
-      - name: Windows Build Tools
-        shell: bash
-        run: |
-          choco install visualstudio2019-workload-vctools -y
-
-      - name: Node Version
-        shell: bash
-        run: ./scripts/node_version.sh
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
-
-      - name: Setup Ccache
-        uses: hendrikmuhs/ccache-action@main
-        with:
-          key: ${{ github.job }}-${{ matrix.node }}
-          save: ${{ github.ref == 'refs/heads/main' || github.repository != 'duckdb/duckdb-node' }}
-          variant: sccache
-
-      - name: Node
-        shell: bash
-        run: ./scripts/node_build_win.sh

@@ -25,7 +25,7 @@ if [[ "$TARGET_ARCH" != "arm64" ]] ; then
     npm test
   fi
 else
-  ARCH=$(file lib/binding/duckdb.node | tr '[:upper:]' '[:lower:]')
+  ARCH=$(file lib/binding/duckdb-bobsled-dev.node | tr '[:upper:]' '[:lower:]')
   if [[ "$ARCH" != *"arm"* ]] ; then
     echo "no arch $ARCH"
     exit 1
